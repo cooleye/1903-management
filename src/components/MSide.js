@@ -42,7 +42,6 @@ class MSide extends React.Component {
             </span>
             }
         >
-            <Menu.Item key="/articles">文章列表</Menu.Item>
             <Menu.Item key="/art-table">文章表格</Menu.Item>
             <Menu.Item key="/add-article">添加文章</Menu.Item>
         </SubMenu>
@@ -72,10 +71,6 @@ class MSide extends React.Component {
             }
         >
             <Menu.Item key="/common">通用组件</Menu.Item>
-            <Menu.Item key="/form">表单组件</Menu.Item>
-            <Menu.Item key="/chart">图表Echarts</Menu.Item>
-            <Menu.Item key="/antv">图表AntV</Menu.Item>
-            <Menu.Item key="/biz">图表Bizcharts</Menu.Item>
            
             
         </SubMenu>
