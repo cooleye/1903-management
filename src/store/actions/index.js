@@ -28,3 +28,13 @@ export const getBooks = () =>{
          })
     }
 }
+
+// 保存富文本编辑器内容
+export const saveEditorContent = (data) =>{
+    return dispatch =>{
+        axios.post("http://localhost:3000/article",data)
+        .then(res =>{
+            console.log(res)
+        })
+    }
+}
