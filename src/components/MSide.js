@@ -12,7 +12,7 @@ class MSide extends React.Component {
     }
 
     handleClick = e => {
-        console.log('click ', e);
+        // console.log('click ', e);
         let to = e.key;
         this.props.history.push(to)
     };
@@ -43,7 +43,9 @@ class MSide extends React.Component {
             }
         >
             <Menu.Item key="/art-table">文章表格</Menu.Item>
+            <Menu.Item key="/articles">文章列表</Menu.Item>
             <Menu.Item key="/add-article">添加文章</Menu.Item>
+            
         </SubMenu>
         <SubMenu
             key="sub2"

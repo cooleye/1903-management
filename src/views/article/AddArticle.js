@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button} from 'antd';
+import {Button,Input,Upload, Icon, message} from 'antd';
 import {connect} from 'react-redux';
 // 引入编辑器组件
 import BraftEditor from 'braft-editor'
@@ -8,10 +8,16 @@ import 'braft-editor/dist/index.css'
 
 import {saveEditorContent} from '../../store/actions';
 
+import ArticleCover from '../../components/ArticleCover'
+
 class EditorDemo extends React.Component {
 
     state = {
-        // 创建一个空的editorState作为初始值
+        title:"文章标题",
+        author:"Davie",
+        coverImg:"",
+        desc:"",
+
         editorState: BraftEditor.createEditorState(null)
     }
 
@@ -37,14 +43,46 @@ class EditorDemo extends React.Component {
     handleEditorChange = (editorState) => {
         this.setState({ editorState })
     }
+    titleChange = (e) =>{
+        this.setState({
+            title: e.target.value
+        })
+    }
 
+    descChange = (e) => {
+        this.setState({
+            desc: e.target.value
+        })
+    }
+
+    authorChange = (e) =>{
+        this.setState({
+            author: e.target.value
+        })
+    }
+
+   
     publish = () =>{
         const htmlContent = this.state.editorState.toHTML()
-        console.log('save...',htmlContent)
         this.props.saveEditorContent({
-            title: "learn react",
-            author:"davie",
-            content:htmlContent
+            title: this.state.title,
+            author: this.state.author,
+            content: htmlContent,
+            desc: this.state.desc,
+            coverImg: this.state.coverImg
+        })
+        .then(res=>{
+            console.log('ok:',res)
+            if(res.status === 200){
+                this.props.history.push("/articles")
+            }
+        })
+       
+    }
+
+    afterUpload = (imgurl) =>{
+        this.setState({
+            coverImg: imgurl
         })
     }
 
@@ -54,8 +92,21 @@ class EditorDemo extends React.Component {
         return (
             <div className="my-component">
                 <div>
-                    <input placeholder="请输入标题"/>
-                    <Button onClick={this.publish}>发布</Button>
+                    <div>
+                         文章标题：<Input style={{ width: 200 }} placeholder="请输入标题" onChange={this.titleChange}/>
+                    </div>
+                    <div>
+                        作者：<Input style={{ width: 200 }} placeholder="请输入作者" onChange={this.authorChange}/>
+                    </div>
+                    <div>
+                        简介：<Input style={{ width: 200 }} placeholder="请输入简介" onChange={this.descChange}/>
+                    </div>
+                    <div>
+                    <div>
+                        封面图:<ArticleCover afterUpload={this.afterUpload}/>
+                    </div>
+                    <Button style={{ width: 200 }} onClick={this.publish}>发布</Button>
+                    </div>
                 </div>
                 <div className="editor">
                 

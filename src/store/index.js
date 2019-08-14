@@ -7,7 +7,11 @@ const initialState = {
     books:{
         loading:false,
         data:[]
-    }
+    },
+    articles:{
+        data:[]
+    },
+    article:{}
 }
 
 export default createStore(reducer,initialState,applyMiddleware(thunk))
