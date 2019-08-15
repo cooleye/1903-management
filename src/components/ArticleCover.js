@@ -31,7 +31,6 @@ export default class Cover extends React.Component {
             img_url,
             loading: false,
           })
-         
         }
       );
       this.props.afterUpload(info.file.response.imgurl);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux';
-import {Table,BackTop,Typography,Button,Modal} from 'antd';
+import {Table,BackTop,Typography,Button,Modal,message} from 'antd';
 import {
     getArticles,
     deleteArt
@@ -75,6 +75,12 @@ class Articles extends Component {
             cancelText: '取消',
             onOk:()=>{
                 this.props.deleteArt(id)
+                .then(res=>{
+                    if(res.status === 200){
+                        message.success('删除成功！');
+                    }
+                    
+                })
             },
             onCancel:()=>{
               console.log('Cancel');

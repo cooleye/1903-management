@@ -22,7 +22,6 @@ class index extends Component {
                     <Route path="/art-table" component={ArticleTable}/>
                     <Route path="/articles" component={Articles}/>
                     <Route path="/add-article" component={AddArticle}/>
-                    <Route path="/addmd" component={AddByMD}/>
                     <Route path="/art-detail" component={ArticleDetail}/>
                     <Route component={NoMatch}/>
                 </Switch>

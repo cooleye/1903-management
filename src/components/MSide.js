@@ -37,7 +37,7 @@ class MSide extends React.Component {
             key="sub1"
             title={
             <span>
-                <Icon type="mail" />
+                <Icon type="read" />
                 <span>文章管理</span>
             </span>
             }
@@ -52,11 +52,11 @@ class MSide extends React.Component {
             title={
             <span>
                 <Icon type="appstore" />
-                <span>收藏管理</span>
+                <span>分类管理</span>
             </span>
             }
         >
-                <Menu.Item key="5">Option 5</Menu.Item>
+                <Menu.Item key="/add-cat">添加类别</Menu.Item>
                 <Menu.Item key="6">Option 6</Menu.Item>
                 <SubMenu key="sub3" title="Submenu">
                 <Menu.Item key="7">Option 7</Menu.Item>

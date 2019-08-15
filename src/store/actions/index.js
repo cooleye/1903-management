@@ -84,10 +84,10 @@ export const getArticle = (id) =>{
 // 删除文章
 export const deleteArt = (id) =>{
     return dispatch =>{
-        console.log('id:',id)
+        // console.log('id:',id)
         return axios.delete(DOMAIN + '/article?id='+ id)
         .then(res=>{
-            console.log('删除成功：',res)
+            // console.log('删除成功：',res)
             if(res.data){
                 dispatch({
                     type:DELETE_ARTICLE,
@@ -124,7 +124,7 @@ export const fetchEditorContent = (id) =>{
 /** 修改文章内容 */
 export const updateEditorContent = (article) =>{
     return dispatch =>{
-        console.log('修改文章内容:',article)
+        // console.log('修改文章内容:',article)
         return axios.put(DOMAIN + "/article",article)
         .then(res=>{
             return res

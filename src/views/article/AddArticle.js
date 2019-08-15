@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button,Input,Upload, Icon, message} from 'antd';
+import {Button,Form,Input,Row,Col,} from 'antd';
 import {connect} from 'react-redux';
 // 引入编辑器组件
 import BraftEditor from 'braft-editor'
@@ -11,6 +11,16 @@ import {saveEditorContent,fetchEditorContent,updateEditorContent} from '../../st
 import ArticleCover from '../../components/ArticleCover'
 
 import axios from 'axios';
+
+
+const formItemLayout = {
+    labelCol: { span: 4 },
+    wrapperCol: { span: 8 },
+};
+const formTailLayout = {
+    labelCol: { span: 4 },
+    wrapperCol: { span: 8, offset: 4 },
+};
 
 class EditorDemo extends React.Component {
 
@@ -87,7 +97,9 @@ class EditorDemo extends React.Component {
         })
     }
 
-   
+   /**
+    * 发布文章
+    */
     publish = () =>{
         const content = this.state.editorState.toHTML()
         let title = this.state.article.title;
@@ -131,6 +143,9 @@ class EditorDemo extends React.Component {
         })
     }
 
+    /**
+     * braft-editor 组件的上传图片函数
+     */
     myUploadFn = (param) => {
         const serverURL = 'http://localhost:3000/article/upload'
         const fd = new FormData()
@@ -145,6 +160,7 @@ class EditorDemo extends React.Component {
             }
         })
         .then(res=>{
+            console.log("res.data.img_url:",res)
             param.success({url: res.data.img_url})
         })
         .catch(function (error) {
@@ -161,31 +177,40 @@ class EditorDemo extends React.Component {
         const {title,author,desc,img_url} = this.state.article;
         return (
             <div className="my-component">
-                <div>
-                    <div>
-                         文章标题：<Input value={title} style={{ width: 200 }} placeholder="请输入标题" onChange={this.titleChange}/>
-                    </div>
-                    <div>
-                        作者：<Input value={author} style={{ width: 200 }} placeholder="请输入作者" onChange={this.authorChange}/>
-                    </div>
-                    <div>
-                        简介：<Input value={desc} style={{ width: 200 }} placeholder="请输入简介" onChange={this.descChange}/>
-                    </div>
-                    <div>
-                    <div>
-                        封面图:<ArticleCover value={img_url} afterUpload={this.afterUpload}/>
-                    </div>
-                    <Button style={{ width: 200 }} onClick={this.publish}>{this.state.isNew ? "发布":"更新"}</Button>
-                    </div>
-                </div>
-                <div className="editor">
+            <Form layout={"horizontal"}>
+                <Form.Item 
+                    label="标题"  {...formItemLayout}
+                    required>
+                    <Input value={title}  placeholder="请输入标题" onChange={this.titleChange}/>
+                </Form.Item>
+                <Form.Item 
+                    label="作者" {...formItemLayout}
+                    required>
+                    <Input value={author} placeholder="请输入作者" onChange={this.authorChange} />
+                </Form.Item>
+                <Form.Item 
+                    label="简介" {...formItemLayout}
+                    required>
+                <Input value={desc} style={{ width: 200 }} placeholder="请输入简介" onChange={this.descChange} />
+                </Form.Item>
+                <Form.Item 
+                    label="封面图" {...formItemLayout}
+                    required>
+                    <ArticleCover value={img_url} afterUpload={this.afterUpload}/>
+                </Form.Item>
+                <Form.Item  {...formTailLayout} >
+                    <Button type="primary" style={{ width: 200 }} onClick={this.publish}>{this.state.isNew ? "发布":"更新"}</Button>
+                </Form.Item>
                 
-                <BraftEditor
-                    value={editorState}
-                    onChange={this.handleEditorChange}
-                    onSave={this.submitContent}
-                    media={{uploadFn: this.myUploadFn}}
-                />
+            </Form>    
+
+                <div className="editor" style={{backgroundColor:"#fff"}}>
+                    <BraftEditor
+                        value={editorState}
+                        onChange={this.handleEditorChange}
+                        onSave={this.submitContent}
+                        media={{uploadFn: this.myUploadFn}}
+                    />
                 </div>
             </div>
         )
