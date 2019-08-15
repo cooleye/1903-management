@@ -3,12 +3,11 @@ import {connect} from 'react-redux';
 import {Table,BackTop,Typography,Button,Modal} from 'antd';
 import {
     getArticles,
-    deleteArt,
-    editArt
+    deleteArt
 } from '../../store/actions';
 
 const { Title } = Typography;
-
+const { confirm } = Modal;
 
 const columns =  ({checkArt,editArt,deleteArt}) =>{
     return [
@@ -58,10 +57,6 @@ const columns =  ({checkArt,editArt,deleteArt}) =>{
 
 class Articles extends Component {
     
-    state = {
-        visible:false,
-        articleId:null
-    }
     componentDidMount(){
         this.props.getArticles()
     }
@@ -69,30 +64,23 @@ class Articles extends Component {
         this.props.history.push({pathname:"art-detail",state:{id}})
     }
     editArt = (id) =>{
-        console.log(id)
+        this.props.history.push({pathname:"add-article",state:{id}})
     }
     deleteArt = (id) =>{
-        this.setState({
-            visible: true,
-            articleId:id
+        confirm({
+            title: '你确定要删除吗?',
+            content: '删除操作不可逆',
+            okText: '确定',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk:()=>{
+                this.props.deleteArt(id)
+            },
+            onCancel:()=>{
+              console.log('Cancel');
+            },
         });
     }
-
-    handleOk = e => {
-        this.setState({
-            visible: false,
-        });
-        if(this.state.articleId){
-            this.props.deleteArt(this.state.articleId)
-        }
-        
-    };
-    
-    handleCancel = e => {
-        this.setState({
-            visible: false,
-        });
-    };
 
     render() {
         let articles = this.props.articles;
@@ -107,14 +95,6 @@ class Articles extends Component {
                
                  {/** 返回顶部 */}
                 <BackTop/>
-                {/** 模态框 */}
-                <Modal
-                title="你确定要删除吗？"
-                visible={this.state.visible}
-                onOk={this.handleOk}
-                onCancel={this.handleCancel}
-              >
-              </Modal>
 
             </div>
         )
@@ -127,6 +107,5 @@ export default connect(
     }),
     (dispatch)=>({
         getArticles: () => dispatch(getArticles()),
-        deleteArt: (id) => dispatch(deleteArt(id)),
-        editArt: (id) => dispatch(editArt(id))
+        deleteArt: (id) => dispatch(deleteArt(id))
     }))(Articles)

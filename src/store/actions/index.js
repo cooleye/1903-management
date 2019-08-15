@@ -6,6 +6,7 @@ import {
     GET_ARTICLE,
     DELETE_ARTICLE
 } from '../ActionTypes';
+import qs from 'qs';
 
 import axios from 'axios';
 
@@ -35,9 +36,22 @@ export const getBooks = () =>{
 }
 
 // 保存富文本编辑器内容
-export const saveEditorContent = (data) =>{
+export const saveEditorContent = (article) =>{
+   
     return dispatch =>{
-    return axios.post(DOMAIN + "/article",data)
+        console.log('保存富文本编辑器内容:',article)
+        // return axios.post(DOMAIN + "/article",qs.stringify(data),{
+        //     headers: {
+        //         'X-Requested-With': 'XMLHttpRequest',
+        //         'Content-Type': 'application/x-www-form-=urlencoded;charset=UTF-8'
+        //       }
+        // }).then(res=>{
+        //     return res;
+        // })
+        return axios.post(DOMAIN + "/article",article)
+        .then(res=>{
+            return res
+        })
     }
 }
 
@@ -46,7 +60,6 @@ export const getArticles = () =>{
     return dispatch =>{
         return axios.get(DOMAIN + "/article")
         .then(res=>{
-            console.log(res)
             dispatch({
                 type:"GET_ARTICLES",
                 articles:res.data
@@ -58,9 +71,8 @@ export const getArticles = () =>{
 // 查询单个文章
 export const getArticle = (id) =>{
     return dispatch => {
-        return axios.get(DOMAIN + '/article?id='+ id)
+        return axios.get(DOMAIN + '/article?id='+id)
         .then(res=>{
-            console.log(res)
             dispatch({
                 type:GET_ARTICLE,
                 article:res.data
@@ -72,26 +84,50 @@ export const getArticle = (id) =>{
 // 删除文章
 export const deleteArt = (id) =>{
     return dispatch =>{
-        return axios.delete(DOMAIN + "/article",{id})
+        console.log('id:',id)
+        return axios.delete(DOMAIN + '/article?id='+ id)
         .then(res=>{
             console.log('删除成功：',res)
+            if(res.data){
+                dispatch({
+                    type:DELETE_ARTICLE,
+                    id:res.data._id
+                })
+            }
             
-            // dispatch({
-            //     type:DELETE_ARTICLE,
-            //     id:id
-            // })
             return res;
         })
     }
 }
 
 // 编辑文章
-export const editArt = (id) =>{
+// export const editArt = (id) =>{
+//     return dispatch =>{
+//         return axios.put(DOMAIN + "/article")
+//         .then(res=>{
+//             console.log(res)
+//             return res;
+//         })
+//     }
+// }
+
+/** 编辑，获取文章内容 */
+export const fetchEditorContent = (id) =>{
     return dispatch =>{
-        return axios.put(DOMAIN + "/article")
+        return axios.get(DOMAIN + '/article?id='+id)
+        .then(res =>{
+            return res.data;
+        })
+    }
+}
+
+/** 修改文章内容 */
+export const updateEditorContent = (article) =>{
+    return dispatch =>{
+        console.log('修改文章内容:',article)
+        return axios.put(DOMAIN + "/article",article)
         .then(res=>{
-            console.log(res)
-            return res;
+            return res
         })
     }
 }

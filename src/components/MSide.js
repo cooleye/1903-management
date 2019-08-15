@@ -14,7 +14,7 @@ class MSide extends React.Component {
     handleClick = e => {
         // console.log('click ', e);
         let to = e.key;
-        this.props.history.push(to)
+        this.props.history.push({pathname:to,state:{}})
     };
 
     componentDidMount(){

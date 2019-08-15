@@ -6,7 +6,17 @@ import {getBase64,beforeUpload} from '../utils';
 export default class Cover extends React.Component {
   state = {
     loading: false,
+    img_url:null
   };
+
+  componentWillReceiveProps({value}){
+
+    if(value){
+      this.setState({
+        img_url:value
+      })
+    }
+  }
 
   handleChange = info => {
       
@@ -16,17 +26,15 @@ export default class Cover extends React.Component {
     }
     if (info.file.status === 'done') {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl =>
-        this.setState({
-          imageUrl,
-          loading: false,
-        }),
+      getBase64(info.file.originFileObj, img_url =>{
+          this.setState({
+            img_url,
+            loading: false,
+          })
+         
+        }
       );
-    }
-
-    let imgurl = info.file.response.imgurl;
-    if(imgurl){
-      this.props.afterUpload(imgurl);
+      this.props.afterUpload(info.file.response.imgurl);
     }
   };
 
@@ -37,7 +45,7 @@ export default class Cover extends React.Component {
         <div className="ant-upload-text">Upload</div>
       </div>
     );
-    const { imageUrl } = this.state;
+    const { img_url } = this.state;
     return (
       <Upload
         name="avatar"
@@ -48,7 +56,7 @@ export default class Cover extends React.Component {
         beforeUpload={beforeUpload}
         onChange={this.handleChange}
       >
-        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+        {img_url ? <img src={img_url} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
       </Upload>
     );
   }
